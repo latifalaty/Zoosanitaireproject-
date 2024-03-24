@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from pymongo import MongoClient
-
+from bson import ObjectId
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -12,7 +12,8 @@ collection = db['user']
 @app.route('/')
 def index():
     if 'username' in session:
-        return render_template('index.html', username=session['username'])
+        users = collection.find()
+        return render_template('index.html', username=session['username'], users=users)
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -44,6 +45,12 @@ def add_user():
     email = request.form['email']
     user_data = {'username': username, 'password': password, 'email': email}
     collection.insert_one(user_data)
+    return redirect(url_for('index'))
+
+@app.route('/delete_user/<user_id>', methods=['POST'])
+def delete_user(user_id):
+    # Supprimer un utilisateur de la collection en utilisant son ID
+    collection.delete_one({'_id': ObjectId(user_id)})
     return redirect(url_for('index'))
 
 if __name__ == '__main__':

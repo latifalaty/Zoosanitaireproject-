@@ -8,12 +8,53 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Ajouter un Utilisateur</h1>
-    <form action="/add_user" method="POST">
+
+    <h1>Liste des Utilisateurs</h1>
+    {% if username %}
+        <p>Bonjour, {{ username }}!</p>
+        <a href="{{ url_for('logout') }}">Déconnexion</a>
+    {% endif %}
+    
+    <table>
+        <tr>
+            <th>Nom d'utilisateur</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <form id="deleteForm_{{ user._id }}" action="/delete_user/{{ user._id }}" method="POST">
+                        <button type="button" onclick="confirmDelete('{{ user._id }}')">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <button id="toggleAddUserForm">Ajouter utilisateur </button>
+    <form id="addUserForm" action="/add_user" method="POST" style="display: none;">
         <input type="text" name="username" placeholder="Nom d'utilisateur">
         <input type="password" name="password" placeholder="Mot de passe">
         <input type="email" name="email" placeholder="Email">
         <button type="submit">Ajouter Utilisateur</button>
     </form>
+
+    
+    <script>
+        document.getElementById('toggleAddUserForm').addEventListener('click', function() {
+            var form = document.getElementById('addUserForm');
+            form.style.display = (form.style.display === 'none') ? 'block' : 'none';
+        });
+
+        function confirmDelete(userId) {
+            var confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
+            if (confirmation) {
+                document.getElementById('deleteForm_' + userId).submit();
+            }
+        }
+    </script>
 </body>
 </html>

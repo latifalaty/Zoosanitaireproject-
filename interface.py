@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from pymongo import MongoClient
 from bson import ObjectId
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -8,6 +9,10 @@ app.secret_key = 'your_secret_key'
 client = MongoClient('mongodb://localhost:27017/')
 db = client['zoo']
 collection = db['user']
+
+# Nom d'utilisateur et mot de passe de l'administrateur
+admin_username = 'admin'
+admin_password = 'adminpassword'
 
 @app.route('/')
 def index():
@@ -22,12 +27,17 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
+        # Vérifier si l'utilisateur est administrateur
+        if username == admin_username and password == admin_password:
+            session['username'] = username
+            return redirect(url_for('index'))
+        
         # Vérifier les informations d'identification dans la base de données
         user = collection.find_one({'username': username, 'password': password})
         
         if user:
             session['username'] = username
-            return redirect(url_for('index'))
+            return redirect(url_for('userinterface'))
         else:
             return 'Identifiants invalides. Veuillez réessayer.'
     return render_template('login.html')
@@ -35,7 +45,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
@@ -52,6 +62,10 @@ def delete_user(user_id):
     # Supprimer un utilisateur de la collection en utilisant son ID
     collection.delete_one({'_id': ObjectId(user_id)})
     return redirect(url_for('index'))
+
+@app.route('/userinterface')
+def userinterface():
+    return render_template('userinterface.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

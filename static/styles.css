@@ -1,72 +1,145 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    background-color: #f0f7f4; /* Couleur de fond */
 }
 
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #007bff;
-}
-
-header a {
-    margin-left: auto;
-}
-
-
-footer {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: #4194ed; /* Couleur de l'en-tête */
+    color: #fff; /* Couleur du texte dans l'en-tête */
     padding: 20px;
-    text-align: center;
-    margin-bottom: 2px;
+    text-align:left;
 }
 
-h1 {
-    color: #333;
+.column {
+    margin-top: 50px;
 }
 
-form {
-    max-width: 300px;
-    margin: 0 auto;
+.box {
+    background-color: #fff; /* Couleur de fond de la boîte de connexion */
+    padding: 20px;
+    border-radius: 5px;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"],
-button {
-    display: block;
+.box input[type="text"],
+.box input[type="password"] {
+    border: 1px solid #007bff; /* Couleur de la bordure des champs de saisie */
+    padding: 15px;
+    margin-bottom: 50px;
     width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+.checkbox {
+    color: #007bff; /* Couleur du texte des cases à cocher */
 }
 
-button:hover {
-    background-color: #0056b3;
+.button.is-info {
+    background-color: #2a81de; /* Couleur de fond du bouton de connexion */
+    border: 1px solid #1abc7b; /* Couleur de la bordure du bouton de connexion */
+    color: #d58e22; /* Couleur du texte du bouton de connexion */
+    padding: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+.button.is-info:hover {
+    background-color: #0056b3; /* Couleur de fond du bouton de connexion au survol */
+    border: 1px solid #0056b3; /* Couleur de la bordure du bouton de connexion au survol */
+    color: #fff; /* Couleur du texte du bouton de connexion au survol */
+}
+.container {
+    width: 50%;
+    margin: 0 auto; 
+}
+/* Style du tableau */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+table th, table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
     text-align: left;
 }
 
-th {
-    background-color: #f2f2f2;
+table th {
+    background-color: #cba42f;
+    color: white;
+}
+
+/* Style du bouton Ajouter utilisateur */
+#toggleAddUserForm {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* Style du formulaire Ajouter utilisateur */
+#addUserForm {
+    margin-top: 20px;
+}
+
+#addUserForm input[type="text"],
+#addUserForm input[type="password"],
+#addUserForm input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    
+    border: 1px solid #ccc;
+}
+
+#addUserForm button[type="submit"] {
+    background-color: #e19913;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+
+}
+
+/* Style des messages d'alerte */
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* Style des boutons de confirmation */
+.confirmation-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+.supbutton{
+    background-color: #e19913;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+.logout {
+    text-align: right; /* Aligne le contenu à droite */
+}
+
+.logout a {
+    color: orange; /* Couleur du lien */
+    text-decoration: none; /* Supprime le soulignement par défaut du lien */
+}
+.addurl{
+    background-color: #d58e22;
+    border-radius: 10px;
+    padding:5px 10px;
+
+}
+.chercher{
+    border-radius: 30px;
 }

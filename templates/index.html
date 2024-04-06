@@ -7,22 +7,24 @@
     <title>Zoosanitaire</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+<header>
+    <img src="static/logo-CNVZ.png" alt="Logo de la Plateforme Zoosanitaire"> 
+
+    {% if username %}
+      <div class="logout">  <a href="{{ url_for('logout') }}">Déconnexion</a></div>
+    {% endif %}
+</header>
 <body>
 
-    <header>
-        <h2> Plateforme Zoosanitaire </h2>
-        {% if username %}
-            <a href="{{ url_for('logout') }}">Déconnexion</a>
-        {% endif %}
-    </header>
-
-    <h1>Liste des Utilisateurs</h1>
     
+
+    <h1 style="color: green;">Liste des Utilisateurs</h1>
+   
     <table>
         <tr>
-            <th>Nom d'utilisateur</th>
-            <th>Email</th>
-            <th>Action</th>
+            <th style="color: green;">Nom d'utilisateur</th>
+            <th style="color: green;">Email</th>
+            <th style="color: green;">Action</th>
         </tr>
         {% for user in users %}
             <tr>
@@ -30,13 +32,14 @@
                 <td>{{ user.email }}</td>
                 <td>
                     <form id="deleteForm_{{ user._id }}" action="/delete_user/{{ user._id }}" method="POST">
-                        <button type="button" onclick="confirmDelete('{{ user._id }}')">Supprimer</button>
+                        <button type="button" onclick="confirmDelete('{{ user._id }}')" class="supbutton">Supprimer</button>
                     </form>
                 </td>
             </tr>
         {% endfor %}
     </table>
-    
+    <div class="container">
+        <div class="row">
     <button id="toggleAddUserForm">Ajouter utilisateur</button>
     <form id="addUserForm" action="/add_user" method="POST" style="display: none;">
         <input type="text" name="username" placeholder="Nom d'utilisateur">
@@ -44,18 +47,14 @@
         <input type="email" name="email" placeholder="Email">
         <button type="submit">Ajouter Utilisateur</button>
     </form>
-
+        </div>
+    </div>
     <!--<footer>
         <p>&copy; 2024 Projet Zoosanitaire. Tous droits réservés.</p>
     </footer>-->
     
     <script>
-        window.onload = function() {
-            var username = "{{ username }}";
-            if (username) {
-                alert("Bonjour, " + username + " !");
-            }
-        };
+       
 
         document.getElementById('toggleAddUserForm').addEventListener('click', function() {
             var form = document.getElementById('addUserForm');

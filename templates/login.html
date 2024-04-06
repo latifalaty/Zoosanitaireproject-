@@ -3,19 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask MongoDB Interface - Connexion</title>
+    <title> Connexion</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+<header><img src="static/logo-CNVZ.png" alt="Logo de la Plateforme Zoosanitaire"></header>
+
 <body>
-    <h1>Connexion</h1>
-    <form action="/login" method="POST">
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        
-        <label for="password">Mot de passe:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <button type="submit">Se connecter</button>
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="column is-6 is-offset-3">
+        <h3 class="title">Login</h3>
+        <div class="box">
+            <form method="POST" action="/login">
+                <div class="field">
+                    <div class="control">
+                        <input class="input is-large" type="text" name="username" placeholder="Your username" autofocus="">
+                    </div>
+                </div>
+    
+                <div class="field">
+                    <div class="control">
+                        <input class="input is-large" type="password" name="password" placeholder="Your Password">
+                    </div>
+                </div>
+                
+                <button class="button is-block is-info is-large is-fullwidth">Login</button>
+            </form>
+        </div>
+    </div></div></div>
 </body>
 </html>

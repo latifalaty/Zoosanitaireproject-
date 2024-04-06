@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoosanitaire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+    <header>
+        <img src="static/logo-CNVZ.png" alt="Logo de la Plateforme Zoosanitaire"> 
+        <h2 style="color: green;">Espace utilisateur</h2>
+       
+    </header>
+<body>
+    <form action="POST">
+    <label for="url">Ajouter un url:</label>
+    <br>
+    <input type="file" for="url"/>
+    <button class="addurl"   type="submit">Ajouter l'url</button>
+</form>
+    <h1>Données extrait:</h1>
+   <input type="text"/> <button class="chercher" type="button">Chercher</button>
+   <table>
+    <th>Date</th>
+    <th>Symbtome</th>
+    <th>Maladie</th>
+    <th>localisation </th>
+    <th>espece </th>
+   </table>
+</body>
+
+</html>

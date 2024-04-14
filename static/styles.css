@@ -2,11 +2,20 @@ body {
     background-color: #f0f7f4; /* Couleur de fond */
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: #4194ed; /* Couleur du texte des titres */
+}
+
+ul {
+    list-style-type: none; /* Supprime les puces des listes */
+    padding: 0;
+}
+
 header {
     background-color: #4194ed; /* Couleur de l'en-tête */
     color: #fff; /* Couleur du texte dans l'en-tête */
     padding: 20px;
-    text-align:left;
+    text-align: left;
 }
 
 .column {
@@ -33,6 +42,17 @@ header {
     color: #007bff; /* Couleur du texte des cases à cocher */
 }
 
+button {
+    cursor: pointer; /* Change le curseur au survol des boutons */
+}
+.exporter{
+    background-color: #2a81de; /* Couleur de fond du bouton de connexion */
+    border: 1px solid #1abc7b; /* Couleur de la bordure du bouton de connexion */
+    color: #d58e22; /* Couleur du texte du bouton de connexion */
+    padding: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
 .button.is-info {
     background-color: #2a81de; /* Couleur de fond du bouton de connexion */
     border: 1px solid #1abc7b; /* Couleur de la bordure du bouton de connexion */
@@ -47,11 +67,12 @@ header {
     border: 1px solid #0056b3; /* Couleur de la bordure du bouton de connexion au survol */
     color: #fff; /* Couleur du texte du bouton de connexion au survol */
 }
+
 .container {
     width: 50%;
     margin: 0 auto; 
 }
-/* Style du tableau */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -69,7 +90,6 @@ table th {
     color: white;
 }
 
-/* Style du bouton Ajouter utilisateur */
 #toggleAddUserForm {
     background-color: #4CAF50;
     color: white;
@@ -79,7 +99,6 @@ table th {
     margin-top: 20px;
 }
 
-/* Style du formulaire Ajouter utilisateur */
 #addUserForm {
     margin-top: 20px;
 }
@@ -90,7 +109,6 @@ table th {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    
     border: 1px solid #ccc;
 }
 
@@ -100,10 +118,8 @@ table th {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-
 }
 
-/* Style des messages d'alerte */
 .alert {
     padding: 20px;
     background-color: #f44336;
@@ -111,7 +127,6 @@ table th {
     margin-bottom: 15px;
 }
 
-/* Style des boutons de confirmation */
 .confirmation-button {
     background-color: #4CAF50;
     color: white;
@@ -119,13 +134,15 @@ table th {
     border: none;
     cursor: pointer;
 }
-.supbutton{
+
+.supbutton {
     background-color: #e19913;
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
 }
+
 .logout {
     text-align: right; /* Aligne le contenu à droite */
 }
@@ -134,12 +151,13 @@ table th {
     color: orange; /* Couleur du lien */
     text-decoration: none; /* Supprime le soulignement par défaut du lien */
 }
-.addurl{
+
+.addurl {
     background-color: #d58e22;
     border-radius: 10px;
-    padding:5px 10px;
-
+    padding: 5px 10px;
 }
-.chercher{
+
+.chercher {
     border-radius: 30px;
 }

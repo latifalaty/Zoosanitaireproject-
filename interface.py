@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from pymongo import MongoClient
 from bson import ObjectId
-
+from back import webscraping, nettoyer_paragraphe, extraire_maladie, summarization
+import pandas as pd
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -66,6 +67,51 @@ def delete_user(user_id):
 @app.route('/userinterface')
 def userinterface():
     return render_template('userinterface.html')
+
+@app.route('/scrape', methods=['POST'])
+def scrape():
+    # Obtenez les URL à partir du formulaire
+    urls = request.form.getlist('url')
+    
+    # Effectuez le web scraping
+    contenu = webscraping(urls)
+    
+    # Nettoyez le texte et extrayez les maladies pour chaque paragraphe
+    maladies = []
+    resumers = []  # Liste pour stocker les résumés de chaque paragraphe
+    
+    
+    for paragraphe in contenu:
+        paragraphe_propre = nettoyer_paragraphe(paragraphe)
+        maladies_article = extraire_maladie(paragraphe_propre)
+        maladies.append(maladies_article)
+        resumer = summarization(paragraphe_propre)
+        resumers.append(resumer)  # Ajoutez le résumé à la liste
+    
+    # Vous pouvez maintenant utiliser les données (contenu, maladies, résumé) comme vous le souhaitez
+    return render_template('result.html', contenu=contenu, maladies=maladies, resumers=resumers)
+
+@app.route('/export_to_excel', methods=['POST'])
+def export_to_excel():
+    contenu = request.form['contenu']
+    maladies = request.form.getlist('maladie')
+    resumes = request.form.getlist('resumer')
+
+    # Créer un DataFrame avec les données
+    data = {'Contenu': [contenu], 'Maladies': maladies, 'Résumés': resumes}
+    df = pd.DataFrame(data)
+
+    # Exporter vers un fichier Excel
+    excel_file = 'exported_data.xlsx'
+    df.to_excel(excel_file, index=False)
+
+    # Créer une réponse pour télécharger le fichier Excel
+    response = make_response(open(excel_file, 'rb').read())
+    response.headers.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response.headers.set('Content-Disposition', 'attachment', filename=excel_file)
+
+    return response
+
 
 if __name__ == '__main__':
     app.run(debug=True)

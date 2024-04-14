@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Résultat</h1>
+
+    <!-- Affichage du contenu -->
+    <h2>Contenu</h2>
+    <p>{{ contenu }}</p>
+
+    <!-- Affichage des maladies -->
+    <h2>Maladies</h2>
+    <ul>
+        {% for maladie in maladies %}
+            <li>{{ maladie }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Affichage du résumé -->
+    <h2>Résumés</h2>
+    <ul>
+        {% for resumer in resumers %}
+            <li>{{ resumer }}</li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('export_to_excel') }}" method="POST">
+        <input type="hidden" name="contenu" value="{{ contenu }}">
+        {% for maladie in maladies %}
+            <input type="hidden" name="maladie" value="{{ maladie }}">
+        {% endfor %}
+        {% for resumer in resumers %}
+            <input type="hidden" name="resumer" value="{{ resumer }}">
+        {% endfor %}
+        <button type="submit" class="exporter">Exporter vers Excel</button>
+    </form>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</body>
+</html>

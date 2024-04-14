@@ -8,27 +8,52 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
-    <header>
-        <img src="static/logo-CNVZ.png" alt="Logo de la Plateforme Zoosanitaire"> 
-        <h2 style="color: green;">Espace utilisateur</h2>
-       
-    </header>
+<header>
+    <img src="{{ url_for('static', filename='logo-CNVZ.png') }}" alt="Logo de la Plateforme Zoosanitaire"> 
+    <h2 style="color: green;">Espace utilisateur</h2>
+</header>
+
 <body>
-    <form action="POST">
-    <label for="url">Ajouter un url:</label>
-    <br>
-    <input type="file" for="url"/>
-    <button class="addurl"   type="submit">Ajouter l'url</button>
-</form>
-    <h1>Données extrait:</h1>
-   <input type="text"/> <button class="chercher" type="button">Chercher</button>
-   <table>
-    <th>Date</th>
-    <th>Symbtome</th>
-    <th>Maladie</th>
-    <th>localisation </th>
-    <th>espece </th>
-   </table>
+    <form action="/scrape" method="post"> <!-- Modifiez l'action du formulaire -->
+        <label for="url">Ajouter un url:</label>
+        <br>
+        <input type="text" name="url" id="url"/>
+        <button class="addurl" type="submit">Ajouter l'url</button>
+    </form>
+    
+    <h1>Données extraites:</h1>
+    <div>
+        <h3>Maladies:</h3>
+        <ul>
+            {% for maladie in maladies %}
+                <li>{{ maladie }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h3>Mots-clés:</h3>
+        <ul>
+            {% for keyword in keywords %}
+                <li>{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Symptôme</th>
+                <th>Maladie</th>
+                <th>Localisation</th>
+                <th>Espèce</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Ajoutez ici le code pour afficher les données extraites dans le tableau -->
+        </tbody>
+    </table>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 from back import webscraping, nettoyer_paragraphe, extraire_maladie, summarization
@@ -63,7 +63,26 @@ def delete_user(user_id):
     # Supprimer un utilisateur de la collection en utilisant son ID
     collection.delete_one({'_id': ObjectId(user_id)})
     return redirect(url_for('index'))
+@app.route('/filter', methods=['POST'])
+def filter_data():
+    filter_criteria = request.json 
+    
+    country = filter_criteria.get('country')
+    disease = filter_criteria.get('disease')
+    symptom = filter_criteria.get('symptom')
 
+    query = {}
+    if country:
+        query['country'] = country
+    if disease:
+        query['disease'] = disease
+    if symptom:
+        query['symptom'] = symptom
+
+    filtered_data = collection.find(query)
+
+
+    return jsonify({'result': list(filtered_data)})
 @app.route('/userinterface')
 def userinterface():
     return render_template('userinterface.html')

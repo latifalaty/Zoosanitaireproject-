@@ -20,40 +20,54 @@
         <input type="text" name="url" id="url"/>
         <button class="addurl" type="submit">Ajouter l'url</button>
     </form>
-    
-    <h1>Données extraites:</h1>
-    <div>
-        <h3>Maladies:</h3>
-        <ul>
-            {% for maladie in maladies %}
-                <li>{{ maladie }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+    <form id="filterForm" action="/filter" method="post"> 
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country"><br><br>
 
-    <div>
-        <h3>Mots-clés:</h3>
-        <ul>
-            {% for keyword in keywords %}
-                <li>{{ keyword }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Symptôme</th>
-                <th>Maladie</th>
-                <th>Localisation</th>
-                <th>Espèce</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Ajoutez ici le code pour afficher les données extraites dans le tableau -->
-        </tbody>
-    </table>
-</body>
+        <label for="disease">Disease:</label>
+        <input type="text" id="disease" name="disease"><br><br>
+
+        <label for="symptom">Symptom:</label>
+        <input type="text" id="symptom" name="symptom"><br><br>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('filterForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
+
+            // Récupérer les valeurs des champs
+            const country = document.getElementById('country').value;
+            const disease = document.getElementById('disease').value;
+            const symptom = document.getElementById('symptom').value;
+
+            // Créer un objet JSON avec les critères de filtrage
+            const filterCriteria = {
+                country: country,
+                disease: disease,
+                symptom: symptom
+            };
+
+            // Effectuer une requête POST vers l'endpoint Flask
+            fetch('/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(filterCriteria)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Afficher les données filtrées dans la div de résultat
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
 
 </html>

@@ -12,9 +12,7 @@ ul {
 }
 
 header {
-    background-color: #4194ed; /* Couleur de l'en-tête */
-    color: #fff; /* Couleur du texte dans l'en-tête */
-    padding: 20px;
+   padding: 0.2px;
     text-align: left;
 }
 
@@ -70,6 +68,7 @@ button {
 
 .container {
     width: 50%;
+    height: 70%;
     margin: 0 auto; 
 }
 
@@ -86,21 +85,23 @@ table th, table td {
 }
 
 table th {
-    background-color: #cba42f;
+    background-color: #d0dfd2;
     color: white;
 }
 
 #toggleAddUserForm {
-    background-color: #4CAF50;
+    background-color: rgb(59, 122, 193);
     color: white;
     padding: 10px 20px;
     border: none;
+    border-radius: 20px;
     cursor: pointer;
     margin-top: 20px;
 }
 
 #addUserForm {
     margin-top: 20px;
+    
 }
 
 #addUserForm input[type="text"],
@@ -113,11 +114,11 @@ table th {
 }
 
 #addUserForm button[type="submit"] {
-    background-color: #e19913;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
+    margin-left: 30%;
+    padding: 10px;
+    background-color:rgb(59, 122, 193);
+    border-radius: 20px;
+    font-size: 15px;
 }
 
 .alert {
@@ -133,6 +134,7 @@ table th {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+    border-radius: 20px;
 }
 
 .supbutton {
@@ -141,23 +143,33 @@ table th {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+    border-radius: 20px;
 }
 
 .logout {
-    text-align: right; /* Aligne le contenu à droite */
+    text-align: right; 
 }
-
 .logout a {
-    color: orange; /* Couleur du lien */
-    text-decoration: none; /* Supprime le soulignement par défaut du lien */
+    color: rgb(10, 9, 8); 
+    text-decoration: none;
 }
 
 .addurl {
     background-color: #d58e22;
     border-radius: 10px;
     padding: 5px 10px;
+    border-radius: 20px;
 }
 
 .chercher {
     border-radius: 30px;
+}
+.login{
+    margin-left: 38%;
+    padding: 10px;
+    padding-left:10%;
+    padding-right: 10%;
+    background-color: #7ab4b0;
+    border-radius: 20px;
+    font-size: 15px;
 }

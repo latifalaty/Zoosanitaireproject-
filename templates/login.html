@@ -6,28 +6,31 @@
     <title> Connexion</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<header><img src="static/logo-CNVZ.png" alt="Logo de la Plateforme Zoosanitaire"></header>
+<header><img src="static/logo.png" style="width:120px;height: 120px;" alt="Logo de la Plateforme Zoosanitaire"></header>
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="column is-6 is-offset-3">
-        <h3 class="title">Login</h3>
-        <div class="box">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                    <div class="box">
             <form method="POST" action="/login">
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <img src="static/login.png" style="width:80px;height: 80px;margin-bottom: 40px;" alt="Icone de connexion">
+                </div>
+                
                 <div class="field">
                     <div class="control">
-                        <input class="input is-large" type="text" name="username" placeholder="Your username" autofocus="">
+                        <input class="input is-large" style="border-radius: 20px;"  type="text" name="username" placeholder="Your username" autofocus="">
                     </div>
                 </div>
     
                 <div class="field">
                     <div class="control">
-                        <input class="input is-large" type="password" name="password" placeholder="Your Password">
+                        <input class="input is-large" style="border-radius: 20px;" type="password" name="password" placeholder="Your Password">
                     </div>
                 </div>
                 
-                <button class="button is-block is-info is-large is-fullwidth">Login</button>
+                <button class="login">Login</button>
             </form>
         </div>
     </div></div></div>

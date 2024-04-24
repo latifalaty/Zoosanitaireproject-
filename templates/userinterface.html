@@ -11,28 +11,46 @@
 <header>
     <img src="{{ url_for('static', filename='logo-CNVZ.png') }}" alt="Logo de la Plateforme Zoosanitaire"> 
     <h2 style="color: green;">Espace utilisateur</h2>
+    <style>
+       .form-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-container form {
+            margin-right: 20px;
+        }
+
+        #country, #disease {
+            margin-right: 10px;
+        }
+
+        button[type="submit"] {
+            background-color: green;
+            color: white;
+        }
+    </style>
 </header>
 
 <body>
-    <form action="/scrape" method="post"> <!-- Modifiez l'action du formulaire -->
-        <label for="url">Ajouter un url:</label>
-        <br>
-        <input type="text" name="url" id="url"/>
-        <button class="addurl" type="submit">Ajouter l'url</button>
-    </form>
-    <form id="filterForm" action="/filter" method="post"> 
-        <label for="country">Country:</label>
-        <input type="text" id="country" name="country"><br><br>
+    <div class="form-container">
+        <form action="/scrape" method="post"> 
+            <label for="url">Ajouter un URL:</label>
+         
+            <input type="text" name="url" id="url"/>
+            <button class="addurl" type="submit">Ajouter l'URL</button>
+        </form>
+        
+        <form id="filterForm" action="/filter" method="post"> 
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country">
+            
+            <label for="disease">Disease:</label>
+            <input type="text" id="disease" name="disease">
 
-        <label for="disease">Disease:</label>
-        <input type="text" id="disease" name="disease"><br><br>
-
-        <label for="symptom">Symptom:</label>
-        <input type="text" id="symptom" name="symptom"><br><br>
-
-        <button type="submit">Filter</button>
-    </form>
-
+            <button type="submit">Filter</button>
+        </form>
+    </div>
     <div id="result"></div>
 
     <script>

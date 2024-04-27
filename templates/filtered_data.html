@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Filtered Data</title>
+
+</head>
+<body>
+    <h1>Filtered Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>URL</th>
+                <th>Date</th>
+                <th>Summary</th>
+                <th>Maladies</th>
+                <th>Pays</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in filtered_data %}
+            <tr>
+                <td>{{ data.url }}</td>
+                <td>{{ data.date }}</td>
+                <td>{{ data.summary }}</td>
+                <td>
+                    {% for maladie in data.maladies %}
+                        {{ maladie }}
+                        <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for pays in data.pays %}
+                        {{ pays }}
+                        <br>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

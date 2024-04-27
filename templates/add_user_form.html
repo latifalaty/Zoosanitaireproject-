@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter Utilisateur</title>
+    <!-- Inclure vos styles CSS ici -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Styles du formulaire d'ajout d'utilisateur */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #7ab4b0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .navbar a img {
+            vertical-align: middle;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .field {
+            margin-bottom: 1.5em;
+        }
+
+        .control {
+            position: relative;
+        }
+
+        .input {
+            font-size: 1rem;
+            line-height: 1.5;
+            padding: .5em .75em;
+            width: 50%;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
+            border: 1px solid #dbdbdb;
+            border-radius: .25rem;
+            background-color: #fff;
+            transition: border-color .2s;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #3273dc;
+        }
+
+        .button {
+            display: inline-block;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            padding: .5em 1em;
+            border-radius: .25rem;
+            background-color: #3273dc;
+            color: #fff;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: background-color .2s;
+            border: none;
+        }
+
+        .button:hover {
+            background-color: #2767d0;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <img src="static/logo-CNVZ.png" style="margin: 5px;height: 50px;width: 80px;" alt="Logo de la Plateforme Zoosanitaire">
+   
+        <div class="navbar">
+            <a href="/listusers" onclick="loadPage('{{ url_for('listusers') }}')">Liste des utilisateurs</a>
+            <a href="{{ url_for('logout') }}">
+                <img src="static/logout.png" style="width: 20px;height: 20px;"/>
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+      
+        <h1 style="color:#7ab4b0;">Ajouter Utilisateur</h1>
+        <form action="/add_user" method="POST">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" style="border-radius: 20px;" type="text" name="username" placeholder="Nom d'utilisateur" autofocus="">
+                </div>
+            </div>
+            
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" style="border-radius: 20px;" type="password" name="password" placeholder="Mot de passe" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" title="Le mot de passe doit contenir au moins 8 caractères, y compris au moins un chiffre, une lettre majuscule et une lettre minuscule.">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" style="border-radius: 20px;" type="email" name="email" placeholder="Email">
+                </div>
+            </div>
+            
+            <button class="button" style="border-radius: 20px;">Ajouter Utilisateur</button>
+        </form>
+    </div>
+</body>
+</html>

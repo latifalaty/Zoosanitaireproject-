@@ -11,36 +11,51 @@
     <h1>Résultat</h1>
 
   
-
-    <!-- Affichage des résultats sous forme de tableau -->
-    <h2>Résultats</h2>
     <table>
         <thead>
             <tr>
+                <th>Date</th>
                 <th>Maladie</th>
-                <th>Résumé</th>
+                <th>Pays</th>
             </tr>
         </thead>
         <tbody>
-            {% for i in range(maladies | length) %}
+            {% for data in extracted_data %}
+            <h3>Résumé:</h3>
+            <p>{{ data.summary }}</p>
                 <tr>
-                    <td>{{ maladies[i] }}</td>
-                    <td>{{ resumers[i] }}</td>
+                    <td>{{ data.date }}</td>
+                    <td>
+                        {% for maladie in data.maladies %}
+                            -{{ maladie }}
+                            <br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for pays in data.pays %}
+                           -{{ pays }}
+                           <br>
+                        {% endfor %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+        
+        </table>
+        
+<form action="{{ url_for('export_to_excel') }}" method="POST">
+    {% for data in extracted_data %}
+        <input type="hidden" name="url" value="{{ data.url }}">
+        <input type="hidden" name="date" value="{{ data.date }}">
+        <input type="hidden" name="summary" value="{{ data.summary }}">
+        {% for maladie in data.maladies %}
+            <input type="hidden" name="maladies" value="{{ maladie }}">
+        {% endfor %}
+        {% for pays in data.pays %}
+            <input type="hidden" name="pays" value="{{ pays }}">
+        {% endfor %}
+    {% endfor %}
+    <button type="submit" class="exporter">Exporter vers Excel</button>
+</form>
 
-    <!-- Formulaire pour exporter vers Excel -->
-    <form action="{{ url_for('export_to_excel') }}" method="POST">
-        <input type="hidden" name="contenu" value="{{ contenu }}">
-        {% for maladie in maladies %}
-            <input type="hidden" name="maladie" value="{{ maladie }}">
-        {% endfor %}
-        {% for resumer in resumers %}
-            <input type="hidden" name="resumer" value="{{ resumer }}">
-        {% endfor %}
-        <button type="submit" class="exporter">Exporter vers Excel</button>
-    </form>
-</body>
-</html>
+        

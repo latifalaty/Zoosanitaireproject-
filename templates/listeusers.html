@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoosanitaire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav {
+        background-color: #7ab4b0;
+    }
+
+    .navbar {
+        overflow: hidden;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .navbar a.active {
+        background-color: #7ab4b0;
+        color: white;
+    }
+</style>
+</head>
+<header>
+
+    <nav>
+        <img src="static/logo-CNVZ.png" style="float:left; margin: 5px;height: 50px;width: 80px;" alt="Logo de la Plateforme Zoosanitaire">
+   
+        <div class="navbar">
+            
+        {% if username %}
+            <a href="{{ url_for('logout') }}" style="float:right;">
+                <img src="static/logout.png" style="width: 20px;height: 20px;"/>
+            </a>
+            {% endif %}
+            <a href="/" onclick="loadPage('{{ url_for('index') }}')" style="float:right;">Acceuil</a>
+        </div>
+    </nav>
+    <div style="text-align: center; ">
+        <h1 style="color:#7ab4b0; display: inline-block;">Liste des Utilisateurs</h1>
+    
+       
+    </div>
+    
+    
+</header>
+<body>
+
+    
+
+ 
+   
+    <table>
+        <tr>
+            <th style="color: rgb(59, 122, 193);;">Nom d'utilisateur</th>
+            <th style="color:rgb(59, 122, 193);;">Email</th>
+            <th style="color: rgb(59, 122, 193);;">Action</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <form id="deleteForm_{{ user._id }}" action="/delete_user/{{ user._id }}" method="POST">
+                        <button type="button" onclick="confirmDelete('{{ user._id }}')" style="border: none;"><img src="static\corbeil.png" style="height: 20px;width: 20px;"/></button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="container">
+        <div class="row" >
+    <button id="toggleAddUserForm" style="margin-left: 35%;"><a href="/add_user_form" style="text-decoration: none;color: white;">Ajouter utilisateur</a></button>
+   
+        </div>
+    </div>
+    <!--<footer>
+        <p>&copy; 2024 Projet Zoosanitaire. Tous droits réservés.</p>
+    </footer>-->
+    
+    <script>
+       
+
+        document.getElementById('toggleAddUserForm').addEventListener('click', function() {
+            var form = document.getElementById('addUserForm');
+            form.style.display = (form.style.display === 'none') ? 'block' : 'none';
+        });
+
+        function confirmDelete(userId) {
+            var confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
+            if (confirmation) {
+                document.getElementById('deleteForm_' + userId).submit();
+            }
+        }
+    </script>
+       <script>
+        function loadPage(url) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("content").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+    </script>
+</body>
+</html>

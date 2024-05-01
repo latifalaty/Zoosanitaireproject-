@@ -17,12 +17,11 @@ extracteddata = db['extracteddata']
 # Nom d'utilisateur et mot de passe de l'administrateur
 admin_username = 'admin'
 admin_password = 'adminpassword'
-
-@app.route('/')
+@app.route('/index')
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -30,7 +29,7 @@ def login():
         
         if username == admin_username and password == admin_password:
             session['username'] = username
-            return redirect(url_for('index'))
+            return redirect(url_for('index'))  # Modifier cette ligne pour rediriger vers '/index'
         
         user = collection.find_one({'username': username, 'password': password})
         
@@ -196,8 +195,6 @@ def listusers():
     if 'username' in session:
         users = collection.find()
         return render_template('listeusers.html', username=session['username'], users=users)
-    else:
-        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

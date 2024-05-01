@@ -9,13 +9,13 @@
 
 </head>
 <body>
-    <h1>Filtered Data</h1>
+    <h1>Données filtré par maladie</h1>
     <table>
         <thead>
             <tr>
                 <th>URL</th>
                 <th>Date</th>
-                <th>Summary</th>
+                <th>Résumé</th>
                 <th>Maladies</th>
                 <th>Pays</th>
             </tr>
@@ -42,5 +42,20 @@
             {% endfor %}
         </tbody>
     </table>
+            
+<form action="{{ url_for('export_to_excel') }}" method="POST">
+    {% for data in extracted_data %}
+        <input type="hidden" name="url" value="{{ data.url }}">
+        <input type="hidden" name="date" value="{{ data.date }}">
+        <input type="hidden" name="summary" value="{{ data.summary }}">
+        {% for maladie in data.maladies %}
+            <input type="hidden" name="maladies" value="{{ maladie }}">
+        {% endfor %}
+        {% for pays in data.pays %}
+            <input type="hidden" name="pays" value="{{ pays }}">
+        {% endfor %}
+    {% endfor %}
+    <button type="submit" class="exporter">Exporter vers Excel</button>
+</form>
 </body>
 </html>

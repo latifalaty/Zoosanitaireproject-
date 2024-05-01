@@ -1,11 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, make_response,jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 import pandas as pd
-
-from back import webscraping, nettoyer_paragraphe
-from back import detect_language, translate_fr, translate_arabe, summarize_article, extract_country_ang,extraire_maladie_fr,extraire_maladie_ar
-from back import extraire_maladie_ang
+from datetime import datetime
+from back import webscraping, nettoyer_paragraphe, detect_language, translate_fr, translate_arabe, summarize_article, extract_country_ang, extraire_maladie_fr, extraire_maladie_ar, extraire_maladie_ang
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -22,7 +20,7 @@ admin_password = 'adminpassword'
 
 @app.route('/')
 def index():
-     return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -30,12 +28,10 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        # Vérifier si l'utilisateur est administrateur
         if username == admin_username and password == admin_password:
             session['username'] = username
             return redirect(url_for('index'))
         
-        # Vérifier les informations d'identification dans la base de données
         user = collection.find_one({'username': username, 'password': password})
         
         if user:
@@ -52,108 +48,114 @@ def logout():
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
-    # Ajouter un utilisateur à la collection
+    # Extraire les données du formulaire
     username = request.form['username']
     password = request.form['password']
     email = request.form['email']
-    user_data = {'username': username, 'password': password, 'email': email}
-    collection.insert_one(user_data)
-    return redirect(url_for('listusers'))
+    
+    # Vérifier si l'utilisateur existe déjà dans la base de données
+    existing_user = collection.find_one({'$or': [{'username': username}, {'email': email}]})
+    
+    if existing_user:
+        # Si l'utilisateur existe déjà, renvoyer une alerte
+        return 'Cet utilisateur existe déjà.'
+    else:
+        # Ajouter l'utilisateur à la collection
+        user_data = {'username': username, 'password': password, 'email': email}
+        collection.insert_one(user_data)
+        return redirect(url_for('listusers'))
 
 @app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
-    # Supprimer un utilisateur de la collection en utilisant son ID
     collection.delete_one({'_id': ObjectId(user_id)})
     return redirect(url_for('listusers'))
-from datetime import datetime
 
 @app.route('/filter_by_disease', methods=['POST'])
 def filter_by_disease():
-    # Récupérer le nom de la maladie à filtrer depuis le formulaire POST
     disease_name = request.form.get('disease')
 
-    # Rechercher les données dans la base de données qui contiennent la maladie spécifiée
     filtered_data = extracteddata.find({'maladies': disease_name})
 
-    # Convertir les résultats en une liste de dictionnaires
     filtered_data_list = list(filtered_data)
 
     return render_template('filtered_data.html', filtered_data=filtered_data_list)
 
-
-@app.route('/filter_by_date', methods=['POST'])
-def filter_by_date():
-    # Récupérer les dates de début et de fin pour la période de filtrage depuis le formulaire POST
-    start_date_str = request.form.get('start_date')
-    end_date_str = request.form.get('end_date')
-
-    # Convertir les dates de chaînes de caractères en objets datetime
-    start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
-    end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
-
-    # Rechercher les données dans la base de données qui sont dans la plage de dates spécifiée
-    filtered_data = extracteddata.find({'date': {'$gte': start_date, '$lte': end_date}})
-
-    # Convertir les résultats en une liste de dictionnaires
-    filtered_data_list = list(filtered_data)
-
-    return render_template('filtered_data.html', filtered_data=filtered_data_list)
 
 
 @app.route('/userinterface')
 def userinterface():
     return render_template('userinterface.html')
-
 @app.route('/scrape', methods=['POST'])
 def scrape():
-    # Obtenez les URL à partir du formulaire
     urls = request.form.getlist('url')
     
-    # Liste pour stocker les données extraites
     extracted_data = []
 
     for url in urls:
-        # Effectuez le web scraping
-        (date, contenu) = webscraping(url)
+        existing_data = extracteddata.find_one({'url': url})
+        
+        if existing_data:
+            extracted_data.append(existing_data)
+        else:
+            (date, contenu) = webscraping(url)
 
-        if contenu is not None:
-            # Détection de la langue et traitement en conséquence
-            if detect_language(contenu) == "fr":
-                contenu_ang = translate_fr(contenu)
-                maladies = extraire_maladie_fr(nettoyer_paragraphe(contenu))
-            elif detect_language(contenu) == "ar":
-                contenu_ang = translate_arabe(contenu)
-                maladies = extraire_maladie_ar(nettoyer_paragraphe(contenu))
-            elif detect_language(contenu) == "en":
-                contenu_ang = contenu
-                maladies = extraire_maladie_ang(nettoyer_paragraphe(contenu_ang))
-            else:
-                print("Langue non supportée")
-                continue
+            if contenu is not None:
+                if detect_language(contenu) == "fr":
+                    contenu_ang = translate_fr(contenu)
+                    maladies = extraire_maladie_fr(nettoyer_paragraphe(contenu))
+                elif detect_language(contenu) == "ar":
+                    contenu_ang = translate_arabe(contenu)
+                    maladies = extraire_maladie_ar(nettoyer_paragraphe(contenu))
+                elif detect_language(contenu) == "en":
+                    contenu_ang = contenu
+                    maladies = extraire_maladie_ang(nettoyer_paragraphe(contenu_ang))
+                else:
+                    print("Langue non supportée")
+                    
+                # Nettoyage du contenu
+                contenu_nettoye = nettoyer_paragraphe(contenu_ang)
 
-            # Nettoyage du contenu
-            contenu_nettoye = nettoyer_paragraphe(contenu_ang)
+                # Résumé de l'article
+                summary = summarize_article(contenu, sentences_count=4)
 
-            # Résumé de l'article
-            summary = summarize_article(contenu, sentences_count=4)
+                # Extraction des pays
+                pays = extract_country_ang(contenu_nettoye)
 
-            # Extraction des pays
-            pays = extract_country_ang(contenu_nettoye)
+                if isinstance(date, str):
+                    date = datetime.strptime(date, '%Y-%m-%d')
 
-            # Stockage des données extraites dans un dictionnaire
-            data = {
-                'url': url,
-                'date': date,
-                'summary': summary,
-                'maladies': list(maladies),
-                'pays': pays
-            }
-            extracteddata.insert_one(data)
-            # Ajout du dictionnaire à la liste
-            extracted_data.append(data)
+                date_formatted = date.strftime('%Y-%m-%d')
 
-    # Vous pouvez maintenant utiliser extracted_data comme vous le souhaitez
+                # Stockage des données extraites dans un dictionnaire
+                data = {
+                    'url': url,
+                    'date': date_formatted,
+                    'summary': summary,
+                    'maladies': list(maladies),
+                    'pays': pays
+                }
+                
+                extracteddata.insert_one(data)
+                
+                extracted_data.append(data)
+
     return render_template('result.html', extracted_data=extracted_data)
+@app.route('/filter', methods=['POST'])
+def filter_by_date():
+    # Récupérer les dates de début et de fin filtrées à partir du formulaire
+    start_date_str = request.form['start_date']
+    end_date_str = request.form['end_date']
+
+    # Filtrer les données extraites par date
+    filtered_data = extracteddata.find({
+        'date': {
+            '$gte': start_date_str,
+            '$lte': end_date_str
+        }
+    })
+
+    return render_template('filtered_result.html', filtered_data=filtered_data)
+
 @app.route('/export_to_excel', methods=['POST'])
 def export_to_excel():
     # Récupérer les données depuis la base de données extracteddata
@@ -188,12 +190,14 @@ def export_to_excel():
 @app.route('/add_user_form')
 def add_user_form():
     return render_template('add_user_form.html')
+
 @app.route('/listusers')
 def listusers():
     if 'username' in session:
         users = collection.find()
-    return render_template('listeusers.html', username=session['username'], users=users)
-   
+        return render_template('listeusers.html', username=session['username'], users=users)
+    else:
+        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

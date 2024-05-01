@@ -97,23 +97,31 @@
 <body>
      <h1 style="color:#7ab4b0; text-align: center;margin-bottom: 50px;">Extraction des données </h1>
    
-      
-<div class="form-container">
-    <div class="left-container">
-        <form action="/scrape" method="post"> 
-            <label for="url">Ajouter un URL:</label>
-            <input type="text" name="url" id="url" />
-            <button class="addurl" type="submit">Ajouter l'URL</button>
+ 
+     <div class="form-container">
+        <div class="left-container">
+            <form action="/scrape" method="post"> 
+                Ajouter l'url:
+                <input type="text" name="url" id="url" />
+                <button class="addurl" type="submit" style="display: inline-block;">recherche</button>
+            </form>
+        </div>
+        
+    
+        <form action="/filter" method="post" style="display: flex; align-items: center;">
+            <label for="start_date">Start Date </label>
+            <input type="text" id="start_date" name="start_date" placeholder="yyyy-mm-dd" required>
+            <label for="end_date" >End Date </label>
+            <input type="text" id="end_date" name="end_date" placeholder="yyyy-mm-dd" required>
+            <button type="submit" style="width: 150px;height: 50px;">Filtrer par date</button>
+        </form>
+    
+        <form id="filterForm2" action="/filter_by_disease" method="post" style="display: flex; align-items: center;"> 
+            <label for="disease">Disease:</label>
+            <input type="text" id="disease" name="disease">
+            <button type="submit" style="width: 150px;height: 50px;">Filtrer par maladie</button>
         </form>
     </div>
-    <form id="filterForm" action="/filter" method="post"> 
-        <label for="country" >Date:</label>
-        <input type="text" id="country" name="country"placeholder="jj/mm/yyyy" >
-        <label for="disease" style="margin-left: 10px;">Disease:</label>
-        <input type="text" id="disease" name="disease">
-        <button type="submit">Filter</button>
-    </form>
-</div>
     <div id="result"></div>
 
     <script>

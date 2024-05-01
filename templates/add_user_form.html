@@ -126,5 +126,32 @@
             <button class="button" style="border-radius: 20px;">Ajouter Utilisateur</button>
         </form>
     </div>
+    <script>
+        document.getElementById('addUserForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
+
+            // Récupérer les données du formulaire
+            const formData = new FormData(this);
+
+            // Effectuer une requête POST vers l'endpoint Flask
+            fetch('/add_user', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Vérifier si la réponse est un succès
+                if (!response.ok) {
+                    // Afficher un message d'alerte si la réponse n'est pas OK
+                    response.text().then(errorMessage => {
+                        alert(errorMessage);
+                    });
+                } else {
+                    // Rediriger vers la page de liste des utilisateurs si l'ajout est réussi
+                    window.location.href = '/listusers';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
